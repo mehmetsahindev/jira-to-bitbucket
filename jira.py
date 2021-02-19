@@ -17,4 +17,21 @@ def login():
         print("Error")
 
 
-print(login())
+def getSessionID():
+    session = json.loads(login())
+    return session["session"]["value"]
+
+
+def getProjects(JSESSIONID):
+    url = "http://localhost:8080/JIRA/rest/api/2/project"
+
+    headers = {
+        'Cookie': 'JSESSIONID='+JSESSIONID
+    }
+
+    response = requests.request("GET", url, headers=headers)
+
+    return response.text
+
+
+print(getProjects(getSessionID()))
