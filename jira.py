@@ -2,36 +2,18 @@ import requests
 import json
 
 
-def login():
-    url = "http://localhost:8080/JIRA/rest/auth/1/session"
+with open('./config.json') as config_file:
+    config = json.load(config_file)
 
-    payload = '{"username": "admin","password": "123456"}'
+
+def getProjects():
+    url = "http://localhost:8080/JIRA/rest/api/2/project"
+
     headers = {
         'Content-Type': 'application/json'
     }
 
-    try:
-        response = requests.request("POST", url, headers=headers, data=payload)
-        return response.text
-    except:
-        print("Error")
-
-
-def getSessionID():
-    session = json.loads(login())
-    return session["session"]["value"]
-
-
-def getProjects(JSESSIONID):
-    url = "http://localhost:8080/JIRA/rest/api/2/project"
-
-    headers = {
-        'Cookie': 'JSESSIONID='+JSESSIONID
-    }
-
-    response = requests.request("GET", url, headers=headers)
+    response = requests.get(url, headers=headers, auth=(
+        config["login"]["jira"]["username"], config["login"]["jira"]["password"]))
 
     return response.text
-
-
-print(getProjects(getSessionID()))
