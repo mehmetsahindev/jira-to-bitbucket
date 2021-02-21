@@ -1,5 +1,4 @@
-import jira
-import bitbucket
+from functions import jira, bitbucket
 
 # Get projects from Jira
 jira_projects = jira.getProjects()
