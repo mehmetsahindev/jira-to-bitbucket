@@ -1,19 +1,23 @@
 import requests
 import json
+import os.path
+
+config_file = os.path.join(os.path.dirname(
+    os.path.abspath(__file__)), 'config.json')
 
 
-with open('./config.json') as config_file:
+with open(config_file) as config_file:
     config = json.load(config_file)
+    auth = (config["jira"]["username"], config["jira"]["password"])
 
 
 def getProjects():
-    url = "http://localhost:8080/JIRA/rest/api/2/project"
+    url = "http://localhost:8080/JIRA/rest/api/2/project?expand=description"
 
-    headers = {
-        'Content-Type': 'application/json'
-    }
+    try:
+        response = requests.get(url, auth=auth)
+        response.raise_for_status()
+        return json.loads(response.text)
 
-    response = requests.get(url, headers=headers, auth=(
-        config["login"]["jira"]["username"], config["login"]["jira"]["password"]))
-
-    return response.text
+    except requests.exceptions.RequestException as e:
+        raise SystemExit(e)

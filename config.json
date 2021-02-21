@@ -1,12 +1,10 @@
 {
-    "login" :{
-        "jira": {
-            "username": "admin",
-            "password": "123456"
-        },
-        "bitbucket": {
-            "username": "admin",
-            "password": "123456"
-        }
+    "jira": {
+        "username": "admin",
+        "password": "123456"
+    },
+    "bitbucket": {
+        "username": "admin",
+        "password": "123456"
     }
 }
